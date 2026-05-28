@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YIPPEE Clicker</title>
+  <link rel="stylesheet" href="css/loginpage.css" />
+</head>
+<body>
+<canvas id="noise"></canvas>
+<img src="assets/img/yippee1.png" alt="Spinning Yippee" class="spinning-image"/>
+
+<div class="page">
+  <section class="hero">
+
+    <img src="assets/img/TitleScreen.png" alt="Title Screen" class="title-logo">
+
+    <button type="button" class="start-btn-wrap" style="background: none; border: none; padding: 0; cursor: pointer;">
+    <img src="assets/img/TitleButton.png" alt="Let's Start Clicking!" class="start-btn-img">
+    </button>
+
+    <h3>Final Project - ITCC 13.1</h3>
+    <p>YIPPEE Clicker is a cookie clicker recreation, making use of 2020–2026 memes (mostly the yippee drawing)</p>
+
+  </section>
+
+  <footer class="footer section">
+    <p>© Paulo Aguila [05/28/2026]</p>
+  </footer>
+</div>
+
+<audio id="bgm2" autoplay loop preload="auto">
+  <source src="assets/sound/BGMusicStartUp.mp3" type="audio/mpeg">
+</audio>
+<!-- Seperate Music Javascript for Main Lobby -->
+<script>
+  const audio = document.getElementById('bgm2');
+  const maxVolume = 0.5;
+  let fadeInterval;
+
+  window.addEventListener('load', () => {
+    const savedTime = localStorage.getItem('musicTime');
+    if (savedTime) audio.currentTime = parseFloat(savedTime);
+  });
+
+  setInterval(() => {
+    if (!audio.paused) localStorage.setItem('musicTime', audio.currentTime);
+  }, 500);
+
+  function transitionVolume(target) {
+    clearInterval(fadeInterval);
+    if (target > 0 && audio.paused) {
+      audio.play().catch(() => console.log("Click to enable audio"));
+    }
+    fadeInterval = setInterval(() => {
+      if (audio.volume < target) {
+        audio.volume = Math.min(audio.volume + 0.05, target);
+      } else if (audio.volume > target) {
+        audio.volume = Math.max(audio.volume - 0.05, target);
+      }
+      if (audio.volume === target) {
+        clearInterval(fadeInterval);
+        if (target === 0) audio.pause();
+      }
+    }, 100);
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    document.hidden ? transitionVolume(0) : transitionVolume(maxVolume);
+  });
+
+  document.addEventListener('click', () => {
+    if (audio.paused) transitionVolume(maxVolume);
+  }, { once: true });
+</script>
+
+<!-- Firebase SDK for Login -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script>
+  // Firebase Config
+  const firebaseConfig = {
+    apiKey: "AIzaSyACv_qzSiyJqtuZ5DryerW5yOByV0ODpjQ",
+    authDomain: "yippeeclicker.firebaseapp.com",
+    databaseURL: "https://yippeeclicker-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "yippeeclicker",
+    storageBucket: "yippeeclicker.firebasestorage.app",
+    messagingSenderId: "229401867374",
+    appId: "1:229401867374:web:5330e139cd51b69f20227f",
+    measurementId: "G-QLS07X5BEX"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+// When the start button is clicked, it will pop a Google login first before proceeding
+document.querySelector('.start-btn-wrap').addEventListener('click', function(e) {
+  e.preventDefault();   // Stops anchor/form default navigation triggers
+  e.stopPropagation();  // Stops bubble actions to keep the login window open
+
+  const provider = new firebase.auth.GoogleAuthProvider();
+  
+  auth.signInWithPopup(provider)
+    .then((result) => {
+      // Securely store credentials first
+      localStorage.setItem('playerName', result.user.displayName);
+      localStorage.setItem('playerEmail', result.user.email);
+      // Clean hand-off to game loop only after successful database authentication
+      window.location.href = 'maingame.html';
+    })
+    .catch((error) => {
+      console.error('Login failed:', error); // Catches the error
+      alert('Login failed: ' + error.message + ' (Code: ' + error.code + ')'); // Alerts the user regarding the error through the error message and code (for the developer)
+    });
+});
+</script>
+<script src="js/particles.js" defer></script>
+</body>
+</html>

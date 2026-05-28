@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YIPPEE Clicker</title>
+<link rel="stylesheet" href="css/main.css" />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+<!-- Firebase SDK — must load BEFORE functions.js -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script>
+  firebase.initializeApp({
+    apiKey:            "AIzaSyACv_qzSiyJqtuZ5DryerW5yOByV0ODpjQ",
+    authDomain:        "yippeeclicker.firebaseapp.com",
+    databaseURL:       "https://yippeeclicker-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId:         "yippeeclicker",
+    storageBucket:     "yippeeclicker.firebasestorage.app",
+    messagingSenderId: "229401867374",
+    appId:             "1:229401867374:web:5330e139cd51b69f20227f"
+  });
+</script>
+</head>
+<body>
+<canvas id="noise"></canvas>
+
+<!-- LEFT: STORE -->
+<div class="panel-wrap" id="store-wrap">
+  <div id="panel-store">
+    <div class="panel-title">« 🛒 UPGRADES 🛒 »</div>
+    <div id="upgrades-list"></div>
+  </div>
+  <button class="panel-tab" id="store-tab" onclick="togglePanel('store')" title="Toggle upgrades">&#10094;</button>
+</div>
+
+<!-- CENTER: CLICKER -->
+<div id="panel-main">
+  <div id="milestone-banner">🎉 Milestone!</div>
+  <div id="counter-wrap">
+    <div id="main-count">0</div>
+    <div id="main-label">YIPPEE</div>
+    <div id="cps-display">0 per second</div>
+  </div>
+  <button id="click-btn" aria-label="Click to earn">
+    <img id="clicker-img" src="assets/img/YippeeBase.png" width="140" alt="yippee guy">
+  </button>
+</div>
+
+<!-- RIGHT: STATS -->
+<div class="panel-wrap" id="stats-wrap">
+  <button class="panel-tab" id="stats-tab" onclick="togglePanel('stats')" title="Toggle stats">&#10095;</button>
+  <div id="panel-stats">
+    <div class="stats-title">« 📊 PLAYER STATS 📊 »</div>
+    <div class="stat-row"><span>Total earned</span><span id="stat-total">0</span></div>
+    <div class="stat-row"><span>Per click</span>   <span id="stat-cpc">1</span></div>
+    <div class="stat-row"><span>Per second</span>  <span id="stat-cps">0</span></div>
+    <div class="stat-row"><span>Total clicks</span><span id="stat-clicks">0</span></div>
+    <div class="stat-line"></div>
+
+    <div class="stats-title" style="margin-top:8px">« 🏆 MILESTONES 🏆 »</div>
+    <div class="milestone-item" id="ms-100">Reach 100 YIPPEESSS</div>
+    <div class="milestone-item" id="ms-1k">Reach 1,000 YIPPEESSS</div>
+    <div class="milestone-item" id="ms-10k">Reach 10,000 YIPPEESSS</div>
+    <div class="milestone-item" id="ms-100k">Reach 100,000 YIPPEESSS</div>
+    <div class="milestone-item" id="ms-1m">Reach 1,000,000 YIPPEESSS</div>
+    <div class="stat-line"></div>
+
+    <div class="stats-title" style="margin-top:8px">« 👨‍🎓 TOP 3 USERS 👨‍🎓 »</div>
+    <div id="leaderboard-list">
+      <div class="top-users">Loading...</div>
+    </div>
+    <div class="stat-line"></div>
+    <div class="stats-title" style="margin-top:8px">« 🔘 MISC BUTTONS 🔘 »</div>
+    <button class="bar-btn" onclick="saveGame()">💾 Save</button>
+    <button class="bar-btn" onclick="confirmReset()">🗑 Reset // Testing Only</button>
+
+    <div class="stat-line"></div>
+    <div class="stats-title" style="margin-top:8px">« 🎞 EXTRA CREDITS 🎞 »</div>
+    <p>Main Menu Background Music:</p>
+    <p>Lexycat - glitter ✩‧₊˚</p>
+    <a href="https://youtu.be/VJGaVkDpWr4?si=n_ntszei0Ka2X3zH">Link: Click here to redirect</a>
+    <p>Main Game Background Music:</p>
+    <p>Qumu - Animal Crossing - Bubblegum K.K. [Remix]</p>
+    <a href="https://youtu.be/1nomS1pYeZ0?si=59ULbxYgDENHk6IM">Link: Click here to redirect</a>
+    <p>Note:</p>
+    <p>Thank you for playing my YIPPEE game. Despite the countless tasks and exams we have to take,
+      this is the best I could do and have to do before submitting another task and so on. I appreciate
+      the generous time provided by Sir Christian Flores and I wish for the future of his classes to take
+      part in his journey as well.
+    </p>
+  </div>
+</div>
+
+<!-- BOTTOM BAR -->
+<div id="bottom-bar">
+  <span id="credits-text">Made by Paulo Aguila &nbsp;|&nbsp; Art by Lily &nbsp;|&nbsp; ITCC 13.1 Final Project</span>
+</div>
+
+<audio id="bgm" autoplay loop preload="auto">
+  <source src="assets/sound/BGMusicMain.mp3" type="audio/mpeg">
+</audio>
+
+<script src="js/particles.js" defer></script>
+<script src="js/functions.js" defer></script>
+<script src="js/music.js" defer></script>
+
+<script>
+  // Wait for auth state — kick to login if not signed in,
+  // otherwise start the game with the user's UID as the save key
+  firebase.auth().onAuthStateChanged((user) => {
+    if (!user) {
+      window.location.href = 'index.html';
+      return;
+    }
+    // Store display name for leaderboard
+    localStorage.setItem('playerName', user.displayName || user.email);
+
+    // Wait for functions.js to load (it's deferred), then init
+    function tryInit() {
+      if (typeof initGame === 'function') {
+        initGame(user.uid);   // passes UID → per-account save key
+      } else {
+        setTimeout(tryInit, 50);
+      }
+    }
+    tryInit();
+  });
+</script>
+</body>
+</html>
