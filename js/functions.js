@@ -12,16 +12,16 @@ const MILESTONE_IMAGES = [
 ];
 // Upgrades - Can be modified and added more if needed
 const UPGRADES = [
-  { id:'cursor', name:'Scrolling Clicks', icon:'🖱️', desc:'+1/sec per click — Provides off-scrolling (auto-click) YIPPEES!', baseCost:15, costMult:1, cps:1, cpc:0, count:0 },
-  { id:'unc', name:'Unc Status', icon:'👵', desc:'+5/sec per unc — Inviting Unc Status people for YIPPEES!', baseCost:50, costMult:1.10, cps:5, cpc:0, count:0 },
-  { id:'fake', name:'Fake Yippee Creatures', icon:'👥', desc:'+25/sec per fake — Fake Yippees joins in..', baseCost:1100, costMult:1.15, cps:25, cpc:0, count:0 },
-  { id:'neighbor', name:'Neighbor Yippee',  icon:'🙋', desc:'+50/sec per neighbor — Neighbors says hi!', baseCost:12000, costMult:1.2, cps:50, cpc:0, count:0 },
-  { id:'god', name:'TUNG TUNG YIPPEE GOD', icon:'😶‍🌫️', desc:'+200/sec per Tung Tung Yippee God — Tung Yippee God helps you', baseCost:420000, costMult:2, cps:200,  cpc:0, count:0 },
-  { id:'enhance_click', name:'Superior Click', icon:'💪', desc:'+1 per click — Strengthen your YIPPEE', baseCost:25, costMult:1, cps:0, cpc:1, count:0 },
-  { id:'better_click', name:'Aura Training', icon:'🙎🏼', desc:'+5 per click — Nonchalant Pose = AURA!', baseCost:250, costMult:1.10, cps:0, cpc:5, count:0 },
-  { id:'brainrot_click', name:'Brainrot Scrolling', icon:'📲', desc:'+50 per click — Doomscrolling Instagram', baseCost:2300, costMult:1.15, cps:0, cpc:50, count:0 },
-  { id:'aura_click', name:'Aura Farmer', icon:'🧘🏼', desc:'+250 per click — "Im Stronger, Im smarter, IM BETTER"', baseCost:200000, costMult:1.2, cps:0, cpc:250, count:0 },
-  { id:'godly_click', name:'YIPPEE STRENGTH!', icon:'⛓️‍💥', desc:'+500 per click — Yippee StrongMan helps you out', baseCost:676767, costMult:1.25, cps:0, cpc:500, count:0 },
+  { id:'cursor', name:'Scrolling Clicks', icon:'🖱️', desc:'+1/sec per click — Provides off-scrolling (auto-click) YIPPEES!', baseCost:15, costMult:1.10, cps:1, cpc:0, count:0 },
+  { id:'unc', name:'Unc Status', icon:'👵', desc:'+5/sec per unc — Inviting Unc Status people for YIPPEES!', baseCost:50, costMult:1.15, cps:5, cpc:0, count:0 },
+  { id:'fake', name:'Fake Yippee Creatures', icon:'👥', desc:'+25/sec per fake — Fake Yippees joins in..', baseCost:1100, costMult:1.2, cps:25, cpc:0, count:0 },
+  { id:'neighbor', name:'Neighbor Yippee',  icon:'🙋', desc:'+50/sec per neighbor — Neighbors says hi!', baseCost:12000, costMult:2, cps:50, cpc:0, count:0 },
+  { id:'god', name:'TUNG TUNG YIPPEE GOD', icon:'😶‍🌫️', desc:'+200/sec per Tung Tung Yippee God — Tung Yippee God helps you', baseCost:420000, costMult:2.5, cps:200,  cpc:0, count:0 },
+  { id:'enhance_click', name:'Superior Click', icon:'💪', desc:'+1 per click — Strengthen your YIPPEE', baseCost:25, costMult:1.10, cps:0, cpc:1, count:0 },
+  { id:'better_click', name:'Aura Training', icon:'🙎🏼', desc:'+5 per click — Nonchalant Pose = AURA!', baseCost:250, costMult:1.15, cps:0, cpc:5, count:0 },
+  { id:'brainrot_click', name:'Brainrot Scrolling', icon:'📲', desc:'+50 per click — Doomscrolling Instagram', baseCost:2300, costMult:1.2, cps:0, cpc:50, count:0 },
+  { id:'aura_click', name:'Aura Farmer', icon:'🧘🏼', desc:'+250 per click — "Im Stronger, Im smarter, IM BETTER"', baseCost:200000, costMult:1.25, cps:0, cpc:250, count:0 },
+  { id:'godly_click', name:'YIPPEE STRENGTH!', icon:'⛓️‍💥', desc:'+500 per click — Yippee StrongMan helps you out', baseCost:676767, costMult:2, cps:0, cpc:500, count:0 },
   { id:'dog', name:'Doggy Support!', icon:'🐶', desc:'+250 per click and 250 per second — Paulos Dog floats for YIPPEEs', baseCost:50000, costMult:3, cps:250, cpc:250, count:0 },
   { id:'cat', name:'Kitty Support!', icon:'🐱', desc:'+500 per click and 500 per second — Lilys Cat floats for YIPPEEs', baseCost:100000, costMult:3, cps:500, cpc:500, count:0 },
 ];
